@@ -1,4 +1,4 @@
-package com.example.demo.model.config;
+package com.example.demo.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,9 @@ public class SecurityConfig extends UsernamePasswordAuthenticationFilter {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
-
+        http.authorizeHttpRequests(request -> {
+            request.anyRequest().permitAll();
+        });
 
         return http.build();
     }

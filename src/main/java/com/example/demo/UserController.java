@@ -16,7 +16,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<BaseResponse> signup(@RequestBody SignupRequest request) {
         BaseResponse response = new BaseResponse();
-        // TODO: 유저서비스 메서드 호출
+        // TODO: 유저서비스 메서드 호출 & Try-catch
         response.setCode(10000);
         response.setMessage("Success");
         return ResponseEntity.ok(response);
@@ -24,6 +24,7 @@ public class UserController {
     @GetMapping("/info/{idx}")
     public ResponseEntity<UserDetailResponse> getUserInfo(@PathVariable Long idx) {
         UserDetailResponse response = new UserDetailResponse();
+        // TODO: 유저 서비스 메서드 호출 & Try-catch
         response.setCode(20000);
         response.setMessage("Success");
         return ResponseEntity.ok(response);
@@ -31,6 +32,7 @@ public class UserController {
     @GetMapping("/order/{idx}")
     public ResponseEntity<UserOrderResponse> getUserOrder(@PathVariable Long idx) {
         UserOrderResponse response = new UserOrderResponse();
+        // TODO: 유저 서비스 메서드 호출 & Try-catch
         response.setCode(20001);
         response.setMessage("Success");
         return ResponseEntity.ok(response);
@@ -39,6 +41,7 @@ public class UserController {
     @GetMapping("/list")
     public ResponseEntity<UserListResponse> getUserList() {
         UserListResponse response = new UserListResponse();
+        // TODO: 유저 서비스 메서드 호출 & Try-catch
         response.setCode(30000);
         response.setMessage("Success");
         return ResponseEntity.ok(response);

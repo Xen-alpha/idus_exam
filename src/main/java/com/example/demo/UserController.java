@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -24,7 +26,7 @@ public class UserController {
     @GetMapping("/info/{idx}")
     public ResponseEntity<UserDetailResponse> getUserInfo(@PathVariable Long idx) {
         UserDetailResponse response = new UserDetailResponse();
-        // TODO: 유저 서비스 메서드 호출 & Try-catch
+        // TODO: 예외 처리
         UserDetailDto dto = userService.getUserDetail(idx);
         response.setCode(20000);
         response.setMessage("Success");
@@ -34,9 +36,11 @@ public class UserController {
     @GetMapping("/order/{idx}")
     public ResponseEntity<UserOrderResponse> getUserOrder(@PathVariable Long idx) {
         UserOrderResponse response = new UserOrderResponse();
-        // TODO: 유저 서비스 메서드 호출 & Try-catch
+        // TODO: 예외 처리
+        List<OrderDto> dtos = userService.getUserOrder(idx);
         response.setCode(20001);
         response.setMessage("Success");
+        response.setOrders(dtos);
         return ResponseEntity.ok(response);
     }
 

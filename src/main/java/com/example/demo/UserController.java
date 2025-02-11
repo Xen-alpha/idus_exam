@@ -19,8 +19,7 @@ public class UserController {
         System.out.println("Signup request detected");
         BaseResponse response = new BaseResponse();
         userService.signup(request);
-        response.setCode(10000);
-        response.setMessage("Success");
+        response.setSuccess();
         return ResponseEntity.ok(response);
     }
     @GetMapping("/info/{idx}")
@@ -33,8 +32,7 @@ public class UserController {
             response.setDetail(null);
             return ResponseEntity.notFound().build();
         }
-        response.setCode(20000);
-        response.setMessage("Success");
+        response.setSuccess();
         response.setDetail(dto);
         return ResponseEntity.ok(response);
     }
@@ -43,11 +41,9 @@ public class UserController {
         UserOrderResponse response = new UserOrderResponse();
         List<OrderDto> dtos = userService.getUserOrder(idx);
         if (dtos.isEmpty()) {
-            response.setCode(70001);
-            response.setMessage("Empty");
+            response.setEmpty();
         } else {
-            response.setCode(20001);
-            response.setMessage("Success");
+            response.setSuccess();
         }
         response.setOrders(dtos);
         return ResponseEntity.ok(response);
@@ -58,11 +54,9 @@ public class UserController {
         UserListResponse response = new UserListResponse();
         List<UserListDto> dtos = userService.getUserList(email, name, page);
         if (dtos.isEmpty()) {
-            response.setCode(80000);
-            response.setMessage("Empty");
+            response.setEmpty();
         } else {
-            response.setCode(30000);
-            response.setMessage("Success");
+            response.setSuccess();
         }
         response.setList(dtos);
         return ResponseEntity.ok(response);

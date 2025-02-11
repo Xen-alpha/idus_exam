@@ -1,5 +1,6 @@
 package com.example.demo.filter;
 
+import com.example.demo.model.UserEntity;
 import com.example.demo.model.user.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -15,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.time.Duration;
 
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -23,18 +23,28 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("인증 시행 중");
         UsernamePasswordAuthenticationToken token;
         try {
             LoginRequest user = new ObjectMapper().readValue(req.getInputStream(), LoginRequest.class);
+            System.out.println(user.getUsername() + " " + user.getPassword());
             token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return getAuthenticationManager().authenticate(token);
+        return authenticationManager.authenticate(token);
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws ServletException, IOException {
-        doFilter(request,response,chain); // 그냥 통과
+        UserEntity user = (UserEntity) authResult.getPrincipal();
+        String token = JWTChecker.createToken(user.getIdx(), user.getNickname(), user.getRole());
+        ResponseCookie cookie = ResponseCookie.from("TOKEN", token)
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(24*3600)
+                .build();
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }

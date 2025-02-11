@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     public List<UserEntity> findAllByNicknameAndEmail(String nickname, String email, Pageable pageable);
     public List<UserEntity> findAllByNickname(String nickname, Pageable pageable);
     public List<UserEntity> findAllByEmail(String email, Pageable pageable);
+    Optional<UserEntity> findByIdx(Long idx);
 }

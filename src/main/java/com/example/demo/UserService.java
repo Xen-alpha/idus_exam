@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
         user.setEmail(signupRequest.getEmail());
         user.setGender(signupRequest.getGender());
         user.setOrders(new ArrayList<>());
-        user.setRole("ROLE_USER");
+        user.setRole("USER");
         userRepository.save(user);
     }
 
@@ -42,7 +42,8 @@ public class UserService implements UserDetailsService {
         if (user.isPresent()) {
             UserEntity userEntity = user.get();
             result.setIdx(userEntity.getIdx());
-            result.setName(userEntity.getNickname());
+            result.setName(userEntity.getName());
+            result.setNickname(userEntity.getNickname());
             result.setPhone(userEntity.getPhone());
             result.setEmail(userEntity.getEmail());
             result.setGender(userEntity.getGender());
@@ -53,7 +54,7 @@ public class UserService implements UserDetailsService {
 
     public List<OrderDto> getUserOrder(Long idx) {
         List<OrderDto> result = new ArrayList<>();
-        Optional<UserEntity> user = userRepository.findById(idx);
+        Optional<UserEntity> user = userRepository.findByIdx(idx);
         if (user.isPresent()) {
             UserEntity userEntity = user.get();
             List<OrderEntity> orders = orderRepository.findAllByUser(userEntity);

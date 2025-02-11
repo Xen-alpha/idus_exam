@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.filter.JWTChecker;
 import com.example.demo.filter.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +30,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
-        // http.formLogin(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request -> {
-            request.requestMatchers("/", "/user/signup","/user/list", "/login").permitAll()
-                    .anyRequest().authenticated();
+            request.requestMatchers("/", "/user/signup", "/user/list", "/login").permitAll()
+                    //.requestMatchers("/user/info","/user/info/*", "/user/order", "/user/order/*").hasAnyRole("USER", "ADMIN")
+                    .anyRequest().permitAll();
         });
-        // http.addFilterAt(new LoginFilter(authenticationConfiguration.getAuthenticationManager()), UsernamePasswordAuthenticationFilter.class);
+        // 세션을 사용하지 않도록 설정
+        http.sessionManagement(AbstractHttpConfigurer::disable);
+        http.addFilterAt(new LoginFilter(authenticationConfiguration.getAuthenticationManager()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTChecker(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

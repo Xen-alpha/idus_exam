@@ -45,11 +45,13 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<UserListResponse> getUserList() {
+    public ResponseEntity<UserListResponse> getUserList(String name, String email, Integer page) {
         UserListResponse response = new UserListResponse();
         // TODO: 유저 서비스 메서드 호출 & Try-catch
+        List<UserListDto> dtos = userService.getUserList(email, name, page);
         response.setCode(30000);
         response.setMessage("Success");
+        response.setList(dtos);
         return ResponseEntity.ok(response);
     }
 }

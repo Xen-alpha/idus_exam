@@ -84,6 +84,23 @@ public class UserService implements UserDetailsService {
         } else {
             users = userRepository.findAllByUsernameAndEmail(email, username, PageRequest.of(page, 10));
         }
+        for (UserEntity userEntity : users) {
+            UserListDto userListDto = new UserListDto();
+            UserDetailDto userDetailDto = getUserDetail(userEntity.getIdx());
+            userListDto.setUserDetail(userDetailDto);
+            Optional<OrderEntity> lastorder = orderRepository.findFirstByUserOrderByOrderDateDesc(userEntity);
+            if (lastorder.isPresent()) {
+                OrderEntity orderEntity = lastorder.get();
+                OrderDto orderDto = new OrderDto();
+                orderDto.setOrderId(orderEntity.getOrderId());
+                orderDto.setProductName(orderEntity.getProductName());
+                orderDto.setDatetime(orderEntity.getOrderDate());
+                userListDto.setLastOrder(orderDto);
+            } else {
+                userListDto.setLastOrder(null);
+            }
+            result.add(userListDto);
+        }
         
         return result;
     }

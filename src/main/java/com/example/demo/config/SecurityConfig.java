@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,8 +33,8 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request -> {
-            request.requestMatchers("/", "/user/signup", "/user/list", "/login").permitAll()
-                    //.requestMatchers("/user/info","/user/info/*", "/user/order", "/user/order/*").hasAnyRole("USER", "ADMIN")
+            request.requestMatchers("/", "/user/signup", "/user/list", "/login", "/logout").permitAll()
+                    //.requestMatchers("/user/info","/user/info/*", "/user/order", "/user/order/*").hasAnyRole("USER")
                     .anyRequest().permitAll();
         });
         // 세션을 사용하지 않도록 설정

@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -23,12 +23,14 @@ import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@Component
 public class JWTChecker extends OncePerRequestFilter {
-    @Value("${jwtSecret.expiry}")
-    private static int expiry;
-
-    @Value("${jwtSecret.secret}")
-    private static String secret;
+    // TODO: 아래 어노테이션이 작동하게 할 것
+    // @Value("${jwtSecret.expiry}")
+    private final static int expiry = 216000;
+    // TODO: 아래 어노테이션이 작동하게 할 것 : 이 상태로는 Secret이 Authentication 때마다 바뀐다.
+    // @Value("${jwtSecret.key}")
+    private final static String secret = UUID.randomUUID().toString().replace("-", "") + UUID.randomUUID().toString().replace("-", "");
 
     public static String createToken(Long Idx, String username, String role) {
       Map<String, Object> datamap = new HashMap<>();
@@ -60,6 +62,10 @@ public class JWTChecker extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = null;
         Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("TOKEN")) {
                 token = cookie.getValue();

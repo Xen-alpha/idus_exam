@@ -16,7 +16,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<BaseResponse> signup(@RequestBody SignupRequest request) {
         BaseResponse response = new BaseResponse();
-        // TODO: 유저서비스 메서드 호출 & Try-catch
+        userService.signup(request);
         response.setCode(10000);
         response.setMessage("Success");
         return ResponseEntity.ok(response);

@@ -23,6 +23,11 @@ public class UserService implements UserDetailsService {
 
     public void signup(SignupRequest signupRequest) {
         // TODO: UserRepository Save
+        UserEntity user = new UserEntity();
+        user.setName(signupRequest.getName());
+        user.setEmail(signupRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        userRepository.save(user);
     }
 
     public UserDetailResponse getUserDetail(Long idx) {

@@ -47,8 +47,9 @@ public class UserService implements UserDetailsService {
             result.setPhone(userEntity.getPhone());
             result.setEmail(userEntity.getEmail());
             result.setGender(userEntity.getGender());
+            return result;
         }
-        return result;
+        return null;
     }
 
     public List<OrderDto> getUserOrder(Long idx) {

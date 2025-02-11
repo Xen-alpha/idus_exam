@@ -26,8 +26,13 @@ public class UserController {
     @GetMapping("/info/{idx}")
     public ResponseEntity<UserDetailResponse> getUserInfo(@PathVariable Long idx) {
         UserDetailResponse response = new UserDetailResponse();
-        // TODO: 예외 처리
         UserDetailDto dto = userService.getUserDetail(idx);
+        if (dto == null) {
+            response.setCode(72000);
+            response.setMessage("Not found");
+            response.setDetail(null);
+            return ResponseEntity.notFound().build();
+        }
         response.setCode(20000);
         response.setMessage("Success");
         response.setDetail(dto);
@@ -36,10 +41,14 @@ public class UserController {
     @GetMapping("/order/{idx}")
     public ResponseEntity<UserOrderResponse> getUserOrder(@PathVariable Long idx) {
         UserOrderResponse response = new UserOrderResponse();
-        // TODO: 예외 처리
         List<OrderDto> dtos = userService.getUserOrder(idx);
-        response.setCode(20001);
-        response.setMessage("Success");
+        if (dtos.isEmpty()) {
+            response.setCode(70001);
+            response.setMessage("Empty");
+        } else {
+            response.setCode(20001);
+            response.setMessage("Success");
+        }
         response.setOrders(dtos);
         return ResponseEntity.ok(response);
     }
@@ -47,10 +56,15 @@ public class UserController {
     @GetMapping("/list")
     public ResponseEntity<UserListResponse> getUserList(String name, String email, Integer page) {
         UserListResponse response = new UserListResponse();
-        // TODO: 유저 서비스 메서드 호출 & Try-catch
+        // TODO: Try-catch
         List<UserListDto> dtos = userService.getUserList(email, name, page);
-        response.setCode(30000);
-        response.setMessage("Success");
+        if (dtos.isEmpty()) {
+            response.setCode(80000);
+            response.setMessage("Empty");
+        } else {
+            response.setCode(30000);
+            response.setMessage("Success");
+        }
         response.setList(dtos);
         return ResponseEntity.ok(response);
     }

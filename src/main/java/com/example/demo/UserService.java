@@ -78,11 +78,11 @@ public class UserService implements UserDetailsService {
         if (username.isEmpty() && email.isEmpty()) {
             users = userRepository.findAll(PageRequest.of(page, 10)).getContent();
         } else if (username.isEmpty()) {
-            users = userRepository.findAllByEmail(email);
+            users = userRepository.findAllByEmail(email, PageRequest.of(page, 10));
         } else if (email.isEmpty()) {
-            users = userRepository.findAllByUsername(username);
+            users = userRepository.findAllByUsername(username, PageRequest.of(page, 10));
         } else {
-            users = userRepository.findAllByUsernameAndEmail(email, username);
+            users = userRepository.findAllByUsernameAndEmail(email, username, PageRequest.of(page, 10));
         }
         
         return result;

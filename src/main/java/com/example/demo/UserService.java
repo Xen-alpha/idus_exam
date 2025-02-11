@@ -1,10 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.model.UserEntity;
-import com.example.demo.model.user.SignupRequest;
-import com.example.demo.model.user.UserDetailResponse;
-import com.example.demo.model.user.UserListResponse;
-import com.example.demo.model.user.UserOrderResponse;
+import com.example.demo.model.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -22,32 +20,45 @@ public class UserService implements UserDetailsService {
     private final OrderRepository orderRepository;
 
     public void signup(SignupRequest signupRequest) {
-        // TODO: UserRepository Save
+        // TODO: 빌더 패턴?
         UserEntity user = new UserEntity();
         user.setName(signupRequest.getName());
-        user.setEmail(signupRequest.getEmail());
+        user.setNickname(signupRequest.getUsername());
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setPhone(signupRequest.getPhone());
+        user.setEmail(signupRequest.getEmail());
+        user.setGender(signupRequest.getGender());
+        user.setOrders(new ArrayList<>());
         userRepository.save(user);
     }
 
-    public UserDetailResponse getUserDetail(Long idx) {
-        UserDetailResponse response = new UserDetailResponse();
+    public UserDetailDto getUserDetail(Long idx) {
+        UserDetailDto result = new UserDetailDto();
         // TODO: Branching UserRepository.findBy...
-        return response;
+        Optional<UserEntity> user = userRepository.findById(idx);
+        if (user.isPresent()) {
+            UserEntity userEntity = user.get();
+            result.setIdx(userEntity.getIdx());
+            result.setName(userEntity.getNickname());
+            result.setPhone(userEntity.getPhone());
+            result.setEmail(userEntity.getEmail());
+            result.setGender(userEntity.getGender());
+        }
+        return result;
     }
 
-    public UserOrderResponse getUserOrder(Long idx) {
-        UserOrderResponse response = new UserOrderResponse();
+    public OrderDto getUserOrder(Long idx) {
+        OrderDto result = new OrderDto();
         // TODO: orderRepository.findAllBy...
 
-        return response;
+        return result;
     }
 
-    public UserListResponse getUserList(String email, String username, Integer page) {
-        UserListResponse response = new UserListResponse();
+    public UserListDto getUserList(String email, String username, Integer page) {
+        UserListDto result = new UserListDto();
         // TODO: userRepository.findAll(...).getContents()
 
-        return response;
+        return result;
     }
 
     @Override

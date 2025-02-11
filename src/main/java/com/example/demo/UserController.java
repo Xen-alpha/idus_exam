@@ -25,8 +25,10 @@ public class UserController {
     public ResponseEntity<UserDetailResponse> getUserInfo(@PathVariable Long idx) {
         UserDetailResponse response = new UserDetailResponse();
         // TODO: 유저 서비스 메서드 호출 & Try-catch
+        UserDetailDto dto = userService.getUserDetail(idx);
         response.setCode(20000);
         response.setMessage("Success");
+        response.setDetail(dto);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/order/{idx}")

@@ -14,4 +14,15 @@ import java.util.List;
 @Setter
 public class UserOrderResponse extends BaseResponse {
     private List<OrderDto> orders;
+
+    @Override
+    public void setSuccess() {
+        this.setCode(20001);
+        this.setMessage("주문 정보 가져옴");
+    }
+
+    public void setEmpty() {
+        this.setCode(70001);
+        this.setMessage("주문 정보 가져옴");
+    }
 }

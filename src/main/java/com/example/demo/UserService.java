@@ -81,9 +81,9 @@ public class UserService implements UserDetailsService {
         } else if (username.isEmpty()) {
             users = userRepository.findAllByEmail(email, PageRequest.of(page, 10));
         } else if (email.isEmpty()) {
-            users = userRepository.findAllByUsername(username, PageRequest.of(page, 10));
+            users = userRepository.findAllByNickname(username, PageRequest.of(page, 10));
         } else {
-            users = userRepository.findAllByUsernameAndEmail(email, username, PageRequest.of(page, 10));
+            users = userRepository.findAllByNicknameAndEmail(email, username, PageRequest.of(page, 10));
         }
         for (UserEntity userEntity : users) {
             UserListDto userListDto = new UserListDto();
@@ -108,7 +108,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> user = userRepository.findByUsername(username);
+        Optional<UserEntity> user = userRepository.findByNickname(username);
         return user.orElse(null);
     }
 }

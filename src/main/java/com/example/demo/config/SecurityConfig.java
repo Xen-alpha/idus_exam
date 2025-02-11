@@ -15,7 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig extends UsernamePasswordAuthenticationFilter {
+public class SecurityConfig {
+
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
@@ -27,10 +28,12 @@ public class SecurityConfig extends UsernamePasswordAuthenticationFilter {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request -> {
             request.anyRequest().permitAll();
         });
 
         return http.build();
     }
+
 }

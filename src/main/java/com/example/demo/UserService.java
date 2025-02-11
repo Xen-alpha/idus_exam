@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -47,15 +48,15 @@ public class UserService implements UserDetailsService {
         return result;
     }
 
-    public OrderDto getUserOrder(Long idx) {
-        OrderDto result = new OrderDto();
+    public List<OrderDto> getUserOrder(Long idx) {
+        List<OrderDto> result = new ArrayList<>();
         // TODO: orderRepository.findAllBy...
 
         return result;
     }
 
-    public UserListDto getUserList(String email, String username, Integer page) {
-        UserListDto result = new UserListDto();
+    public List<UserListDto> getUserList(String email, String username, Integer page) {
+        List<UserListDto> result = new ArrayList<>();
         // TODO: userRepository.findAll(...).getContents()
 
         return result;

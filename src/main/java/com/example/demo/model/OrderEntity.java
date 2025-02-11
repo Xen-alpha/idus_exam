@@ -22,6 +22,5 @@ public class OrderEntity {
     private Date orderDate;
 
     @ManyToOne
-    @JoinColumn(name="orders")
     private UserEntity user;
 }

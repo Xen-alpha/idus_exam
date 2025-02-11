@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.filter.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,13 +27,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(AbstractHttpConfigurer::disable);
+        http.csrf(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
-        http.formLogin(AbstractHttpConfigurer::disable);
+        // http.formLogin(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request -> {
-            request.anyRequest().permitAll();
+            request.requestMatchers("/", "/user/signup","/user/list", "/login").permitAll()
+                    .anyRequest().authenticated();
         });
-
+        // http.addFilterAt(new LoginFilter(authenticationConfiguration.getAuthenticationManager()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -30,12 +30,12 @@ public class UserEntity implements UserDetails {
     private String email;
     private String gender;
     private Boolean enabled;
+    private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
-        authorities.add(authority);
+        authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
     }
 
@@ -66,7 +66,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 
     @OneToMany(mappedBy="user")

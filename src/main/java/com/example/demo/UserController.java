@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+
     @PostMapping("/signup")
     public ResponseEntity<BaseResponse> signup(@RequestBody SignupRequest request) {
+        System.out.println("Signup request detected");
         BaseResponse response = new BaseResponse();
         userService.signup(request);
         response.setCode(10000);
@@ -56,7 +56,6 @@ public class UserController {
     @GetMapping("/list")
     public ResponseEntity<UserListResponse> getUserList(String name, String email, Integer page) {
         UserListResponse response = new UserListResponse();
-        // TODO: Try-catch
         List<UserListDto> dtos = userService.getUserList(email, name, page);
         if (dtos.isEmpty()) {
             response.setCode(80000);

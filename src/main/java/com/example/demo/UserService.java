@@ -5,7 +5,6 @@ import com.example.demo.model.UserEntity;
 import com.example.demo.model.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,12 +32,12 @@ public class UserService implements UserDetailsService {
         user.setEmail(signupRequest.getEmail());
         user.setGender(signupRequest.getGender());
         user.setOrders(new ArrayList<>());
+        user.setRole("ROLE_USER");
         userRepository.save(user);
     }
 
     public UserDetailDto getUserDetail(Long idx) {
         UserDetailDto result = new UserDetailDto();
-        // TODO: Branching UserRepository.findBy...
         Optional<UserEntity> user = userRepository.findById(idx);
         if (user.isPresent()) {
             UserEntity userEntity = user.get();

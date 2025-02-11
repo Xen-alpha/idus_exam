@@ -24,10 +24,10 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class JWTChecker extends OncePerRequestFilter {
-    @Value("jwtSecret.expiry")
+    @Value("${jwtSecret.expiry}")
     private static int expiry;
 
-    @Value("jwtSecret.secret")
+    @Value("${jwtSecret.secret}")
     private static String secret;
 
     public static String createToken(Long Idx, String username, String role) {

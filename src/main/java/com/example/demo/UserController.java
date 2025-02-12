@@ -3,12 +3,14 @@ package com.example.demo;
 import com.example.demo.model.common.BaseResponse;
 import com.example.demo.model.user.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="member-controller")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
